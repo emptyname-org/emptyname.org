@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# This site is free as air (CC0). All crawlers - search, AI, archival - are welcome.
+
+Sitemap: {{ "sitemap.xml" | absURL }}

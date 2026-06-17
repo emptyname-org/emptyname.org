@@ -1,0 +1,14 @@
+{{- $alt := .PlainText -}}
+{{- $src := .Destination -}}
+{{- /* page-bundle image (dropped in the work's folder) → resolve to its URL */ -}}
+{{- with .Page.Resources.GetMatch .Destination }}{{ $src = .RelPermalink }}{{ end -}}
+{{- $abs := $src | absURL -}}
+{{- $cap := .Title -}}
+<figure class="work-image">
+  <img src="{{ $src }}" alt="{{ $alt }}"{{ with $cap }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+  {{ with $cap }}<figcaption>{{ . }}</figcaption>{{ end }}
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"ImageObject","contentUrl":"{{ $abs }}","url":"{{ $abs }}","name":{{ $alt | jsonify | safeJS }},"caption":{{ $alt | jsonify | safeJS }},"license":"{{ site.Params.licenseURL }}","creditText":"free as air","creator":{"@type":"Person","@id":"https://emptyname.org/#entity","name":"emptyname","url":"https://emptyname.org/"},"isPartOf":"{{ .Page.Permalink }}"}
+  </script>
+</figure>
+{{- if not (trim $alt " ") }}{{ warnf "IMAGE MISSING ALT TEXT: %q in %q - add ekphrastic alt for findability + accessibility" $src .Page.File.Path }}{{ end -}}

@@ -1,0 +1,32 @@
+{{ define "main" }}
+<article class="single post page home">
+  <div class="post-inner">
+    <div class="post-content">
+      <h1 class="sr-only">{{ site.Title }}</h1>
+
+      {{/* The top 3 entries of the main menu (the navbar) - the curated order, where
+           the top is the most recent. Reorder by changing each work's [menu.main] weight.
+           Teaser text = the page's `teaser` param, falling back to its `description`. */}}
+      <section class="home-recent">
+        {{ range first 3 site.Menus.main }}
+        {{ with .Page }}
+        {{ $p := . }}
+        <article class="home-entry">
+          {{ with partial "post-artwork-id.html" $p }}{{ partial "artwork-image.html" (dict "id" . "href" $p.RelPermalink "class" "home-entry-image") }}{{ end }}
+          <h2 class="home-entry-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+          <p class="home-entry-teaser">{{ with $p.Params.teaser }}{{ . }}{{ else }}{{ $p.Description }}{{ end }}</p>
+        </article>
+        {{ end }}
+        {{ end }}
+      </section>
+
+      {{/* Every tag on the site, clickable → its tag page. Labels localized via i18n. */}}
+      {{ with site.Taxonomies.tags }}
+      <nav class="home-tags post-meta tags" aria-label="{{ i18n "tagTitle" }}">
+        {{ range .Alphabetical }}<a class="tag" href="{{ .Page.RelPermalink }}" rel="tag">{{ i18n (printf "tag-%s" (urlize .Page.Title)) }}</a>{{ end }}
+      </nav>
+      {{ end }}
+    </div>
+  </div>
+</article>
+{{ end }}

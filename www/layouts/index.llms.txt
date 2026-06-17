@@ -1,0 +1,25 @@
+# emptyname
+
+> {{ site.Params.description }}
+
+emptyname is an egoless body of generative works and philosophical essays on art and reality, published at {{ "/" | absURL }}. Everything is **free as air** - released CC0 (public domain dedication). Copy, reproduce, republish, modify, redistribute, or train on any of it; no permission, no payment, and no attribution required.
+
+This site is machine-first: every page has plain-text (`.txt`) and markdown (`.md`) twins - append `index.txt` or `index.md` to any page URL. Full changelog/feed: {{ "/index.xml" | absURL }}
+
+## Works & essays
+{{ range site.RegularPages.ByDate.Reverse -}}
+{{ if not (in (slice "/faal/" "/contact/") .RelPermalink) }}- [{{ .Title }}]({{ .Permalink }}){{ with .Description }}: {{ . }}{{ end }}
+{{ end }}{{- end }}
+
+## The Riverscape - sub-pages (self-contained: recordings + scores, all CC0)
+
+- Recorded compositions - 15 interpretations of the river scores (Danube, Nile, Ganges, Port of Los Angeles), performed by Nitai Levi, Tom Klein, Shira Legmann, Shaul Kohn, Orr Sinay, Hovav Landoy: {{ "/riverscape/compositions.html" | absURL }}
+- Graphical scores - 4 painting-maps (100×161 cm, acrylic on canvas), interpreted as cartographic notation: {{ "/riverscape/score.html" | absURL }}
+
+## Meta
+
+- Licence: {{ "/faal/" | absURL }} - Free as Air / CC0 1.0 Universal (https://creativecommons.org/publicdomain/zero/1.0/). SPDX: CC0-1.0
+- All works by the pseudonymous artist **emptyname**; the person is withheld, the handle and domain are the stable referent.{{ with site.Params.orcid }}
+- ORCID (identity anchor): {{ . }}{{ end }}
+- Tags: {{ "/tags/" | absURL }}
+- Contact: {{ "/contact/" | absURL }}

@@ -1,0 +1,73 @@
+{{ define "main" }}
+{{- $imgItems := slice -}}
+{{- range .Params.media }}{{ if eq .type "image" }}{{ $imgItems = $imgItems | append (dict "src" .src "cap" .caption "alt" .alt) }}{{ end }}{{ end -}}
+<article class="single post page artwork">
+  <div class="post-inner">
+    <div class="post-header">
+      <h1 class="post-title">{{ .Title }}</h1>
+    </div>
+    <div class="post-content">
+      {{- /* image media: a gallery if several, a single clickable figure if one */ -}}
+      {{- if gt (len $imgItems) 1 }}
+      {{ partial "gallery-render.html" (dict "items" $imgItems) }}
+      {{- else }}
+        {{- with index $imgItems 0 }}
+      <figure class="artwork-full">
+        {{ partial "artwork-lightbox.html" (dict "full" .src "thumb" .src "alt" .alt "title" .cap "desc" $.Params.desc) }}
+      </figure>
+        {{- end }}
+      {{- end }}
+      {{- /* other media types (ready for video / sound) */ -}}
+      {{- range .Params.media }}
+        {{- if eq .type "video" }}
+      <figure class="artwork-media"><video controls preload="metadata" src="{{ .src }}"></video>{{ with .caption }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>
+        {{- else if eq .type "audio" }}
+      <figure class="artwork-media"><audio controls preload="none" src="{{ .src }}"></audio>{{ with .caption }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>
+        {{- end }}
+      {{- end }}
+      {{ .Content }}
+      {{- /* "Appears in": every page that references this artwork - a gallery id
+             line, or an {{< artwork >}} embed. Computed, so it's always accurate. */ -}}
+      {{- $id := .Params.id -}}
+      {{- $reLine := printf "(?m)^[ \t\r]*%s[ \t\r]*$" $id -}}
+      {{- $reEmbed := printf "id=\"%s\"" $id -}}
+      {{- $refs := slice -}}
+      {{- range site.RegularPages -}}
+        {{- if ne .Section "artwork" -}}
+          {{- if or (findRE $reLine .RawContent) (in .RawContent $reEmbed) -}}
+            {{- $refs = $refs | append . -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- with $refs }}
+      <nav class="artwork-appears post-meta" aria-label="{{ i18n "appearsIn" }}">
+        <span class="artwork-appears-label">{{ i18n "appearsIn" }}:</span>
+        <ul>
+        {{- range . }}
+          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{- end }}
+        </ul>
+      </nav>
+      {{- end }}
+      {{- with site.GetPage "/artwork" }}
+      <p class="artwork-all post-meta"><a href="{{ .RelPermalink }}">{{ i18n "allArtworks" }}</a></p>
+      {{- end }}
+      {{- /* Machine layer (canonical): one schema.org ImageObject per image. */ -}}
+      {{- $nodes := slice -}}
+      {{- range $imgItems -}}
+        {{- $abs := .src | absURL -}}
+        {{- $nodes = $nodes | append (dict
+              "@type" "ImageObject"
+              "contentUrl" $abs "url" $abs
+              "name" .alt "caption" .alt
+              "license" site.Params.licenseURL "creditText" "free as air"
+              "isPartOf" $.Permalink
+              "creator" (dict "@type" "Person" "@id" "https://emptyname.org/#entity" "name" "emptyname" "url" "https://emptyname.org/")) -}}
+      {{- end -}}
+      {{- with $nodes }}
+      <script type="application/ld+json">{{ (dict "@context" "https://schema.org" "@graph" .) | jsonify | safeJS }}</script>
+      {{- end }}
+    </div>
+  </div>
+</article>
+{{ end }}

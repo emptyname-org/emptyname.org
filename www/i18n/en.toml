@@ -1,0 +1,56 @@
+# UI strings - English (canonical). Keys referenced from layouts via {{ i18n "key" }}.
+robotAlt = "The emptyname mark - a small line-drawn robot."
+languageLabel = "Language"
+
+# Contact form
+contactEmailLabel = "Your email"
+contactMessageLabel = "Your message"
+contactAntiSpam = "Anti-spam"
+contactPowGiven = "Given"
+contactPowFind = "find a nonce whose hash starts with"
+contactHuman = "If you're human, click Solve."
+contactSolve = "Solve"
+contactSend = "Send"
+contactNonce = "nonce"
+
+allArtworks = "All artworks"
+appearsIn = "Appears in"
+
+viewImage = "View image {{ .n }}"
+
+# Contact form - JS status messages (passed to contact.js via a data-i18n attribute)
+cfSolving = "solving"
+cfSolved = "solved ✓"
+cfSending = "Sending your message..."
+cfSent = "Your message has been sent."
+cfBadEmail = "Please enter a real email address."
+cfRequired = "Please enter an email and a message."
+cfPowFail = "Anti-spam check failed - click Solve, then send."
+cfSendFail = "Sorry - failed to send your message."
+cfError = "Sorry - something went wrong."
+cfLoading = "...loading..."
+cfUnavailable = "(unavailable - reload the page)"
+
+# Tags / taxonomy UI
+tagTitle = "Tags"
+tagBack = "← all tags"
+
+# Tag display labels (keyed by the English tag's slug - tags themselves stay English
+# in front-matter; only the on-screen label is localized). Add a row per new tag.
+tag-generative-art = "Generative Art"
+tag-experimental-music = "Experimental Music"
+tag-graphical-scores = "Graphical Scores"
+tag-music = "Music"
+tag-paintings = "Paintings"
+tag-texts = "Texts"
+tag-audio = "Audio"
+tag-nft = "NFT"
+tag-performance = "Performance"
+tag-ai = "AI"
+tag-philosophy-of-art = "Philosophy of Art"
+
+anchorLabel = "Link to this section"
+
+[tagCount]
+one = "{{ . }} work with this tag"
+other = "{{ . }} works with this tag"

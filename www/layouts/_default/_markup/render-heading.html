@@ -1,0 +1,4 @@
+{{- /* Headings in content get a copyable anchor link (§, revealed on hover).
+     The id is Goldmark's auto-anchor, derived from the heading text - stable as
+     long as the heading text doesn't change; language-relative in translations. */ -}}
+<h{{ .Level }} id="{{ .Anchor | safeURL }}">{{ .Text }}<a class="hanchor" href="#{{ .Anchor | safeURL }}" aria-label="{{ i18n "anchorLabel" }}">§</a></h{{ .Level }}>

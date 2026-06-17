@@ -1,0 +1,55 @@
+# UI strings - Français
+robotAlt = "La marque d'emptyname - un petit robot dessiné au trait."
+languageLabel = "Langue"
+
+# Formulaire de contact
+contactEmailLabel = "Votre e-mail"
+contactMessageLabel = "Votre message"
+contactAntiSpam = "Anti-spam"
+contactPowGiven = "Étant donné"
+contactPowFind = "trouvez un nonce dont le hachage commence par"
+contactHuman = "Si vous êtes humain, cliquez sur Résoudre."
+contactSolve = "Résoudre"
+contactSend = "Envoyer"
+contactNonce = "nonce"
+
+allArtworks = "Toutes les œuvres"
+appearsIn = "Apparaît dans"
+
+viewImage = "Voir l'image {{ .n }}"
+
+# Formulaire de contact - messages d'état JS (transmis à contact.js via data-i18n)
+cfSolving = "résolution"
+cfSolved = "résolu ✓"
+cfSending = "Envoi de votre message..."
+cfSent = "Votre message a été envoyé."
+cfBadEmail = "Veuillez saisir une adresse e-mail valide."
+cfRequired = "Veuillez saisir un e-mail et un message."
+cfPowFail = "Échec de la vérification anti-spam - cliquez sur Résoudre, puis envoyez."
+cfSendFail = "Désolé - l'envoi de votre message a échoué."
+cfError = "Désolé - une erreur s'est produite."
+cfLoading = "...chargement..."
+cfUnavailable = "(indisponible - rechargez la page)"
+
+# Étiquettes / taxonomie
+tagTitle = "Étiquettes"
+tagBack = "← toutes les étiquettes"
+
+# Étiquettes à afficher (clé = slug de l'étiquette en anglais)
+tag-generative-art = "Art génératif"
+tag-experimental-music = "Musique expérimentale"
+tag-graphical-scores = "Partitions graphiques"
+tag-music = "Musique"
+tag-paintings = "Peintures"
+tag-texts = "Textes"
+tag-audio = "Audio"
+tag-nft = "NFT"
+tag-performance = "Performance"
+tag-ai = "IA"
+tag-philosophy-of-art = "Philosophie de l'art"
+
+anchorLabel = "Lien vers cette section"
+
+[tagCount]
+one = "{{ . }} œuvre avec cette étiquette"
+other = "{{ . }} œuvres avec cette étiquette"

@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article class="single post page archive">
+  <div class="post-inner">
+    <div class="post-header">
+      <h1 class="post-title">{{ if eq .Kind "term" }}{{ i18n (printf "tag-%s" (urlize .Title)) }}{{ else }}{{ i18n "tagTitle" }}{{ end }}</h1>
+      {{ if eq .Kind "term" }}<p class="post-meta">{{ i18n "tagCount" (len .Pages) }}</p>{{ end }}
+    </div>
+    <div class="post-content">
+      <ul class="archive-list reset-list-style">
+      {{ if eq .Kind "term" }}
+        {{ range .Pages.ByDate.Reverse }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time></li>
+        {{ end }}
+      {{ else }}
+        {{ range .Data.Terms.Alphabetical }}
+        <li><a href="{{ .Page.RelPermalink }}">{{ i18n (printf "tag-%s" (urlize .Page.Title)) }}</a> <span class="count">{{ .Count }}</span></li>
+        {{ end }}
+      {{ end }}
+      </ul>
+      {{ if eq .Kind "term" }}<p class="archive-back"><a href="{{ "/tags/" | relLangURL }}">{{ i18n "tagBack" }}</a></p>{{ end }}
+    </div>
+  </div>
+</article>
+{{ end }}

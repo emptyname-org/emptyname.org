@@ -1,0 +1,7 @@
+{{- /* Shared lightbox trigger for a single artwork image.
+       dict: full (big-image URL), thumb (shown img URL), alt, title, desc.
+       Renders an <a> that gallery.js intercepts; the href is the big image, so
+       it still works (opens the image) with JavaScript disabled. */ -}}
+<a class="lightbox-trigger" href="{{ .full }}" data-lightbox data-full="{{ .full }}" data-caption="{{ .title }}"{{ with .desc }} data-desc="{{ . }}"{{ end }}>
+  <img src="{{ .thumb }}" alt="{{ .alt }}" loading="lazy" decoding="async">
+</a>

@@ -1,0 +1,18 @@
+{{- /* Language switcher. Shows every site language; links to the current page's
+       translation when it exists, otherwise to that language's home. The current
+       language is marked aria-current. Only renders when >1 language is configured.
+       Tags are structural metadata (English in every language), so term-page slugs
+       match across languages and Hugo links them as translations automatically -
+       no special-casing needed here. */ -}}
+{{- if gt (len hugo.Sites) 1 -}}
+{{- $cur := . -}}
+<nav class="lang-switcher reset-list-style" aria-label="{{ i18n "languageLabel" }}">
+  {{- range hugo.Sites }}
+  {{- $sl := .Language.Lang -}}
+  {{- $name := .Language.Label -}}
+  {{- $target := .Home -}}
+  {{- range $cur.AllTranslations }}{{ if eq .Language.Lang $sl }}{{ $target = . }}{{ end }}{{ end -}}
+  <a href="{{ $target.RelPermalink }}" hreflang="{{ $sl }}" lang="{{ $sl }}"{{ if eq $sl $cur.Language.Lang }} class="current-lang" aria-current="true"{{ end }}>{{ $name }}</a>
+  {{- end }}
+</nav>
+{{- end -}}

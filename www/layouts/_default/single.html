@@ -1,0 +1,14 @@
+{{ define "main" }}
+<article class="single post page">
+  <div class="post-inner">
+    {{ if and .Params.thumb (not (.HasShortcode "gallery")) (not (.HasShortcode "artwork")) }}{{ partial "artwork-image.html" (dict "id" .Params.thumb "class" "lead-image") }}{{ end }}
+    <div class="post-header">
+      <h1 class="post-title">{{ .Title }}</h1>
+      {{ partial "tags.html" . }}
+    </div>
+    <div class="post-content">
+      {{ .Content }}
+    </div>
+  </div>
+</article>
+{{ end }}

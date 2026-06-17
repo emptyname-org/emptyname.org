@@ -1,0 +1,16 @@
+{{- /* Resolve a page's representative artwork id by looking inside its content:
+       1. the first id in a {{< gallery >}} block, else
+       2. the first {{< artwork id="..." >}} embed, else
+       3. the explicit `thumb` front-matter field (fallback for text-only posts).
+       Returns the id string ("" if none). */ -}}
+{{- $id := "" -}}
+{{- with findRESubmatch `gallery\s*>[^\n]*\n\s*([a-z0-9][a-z0-9-]*)` .RawContent 1 -}}
+  {{- $id = index (index . 0) 1 -}}
+{{- end -}}
+{{- if not $id -}}
+  {{- with findRESubmatch `artwork[^>]*\bid="([^"]+)"` .RawContent 1 -}}
+    {{- $id = index (index . 0) 1 -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $id }}{{ $id = .Params.thumb }}{{ end -}}
+{{- return $id -}}

@@ -1,0 +1,46 @@
+{{- /* Contact form - AJAX-submitted (/js/contact.js) to the same-server PHP
+       handler (message.php), which sends via postfix. Fields: email (-> Reply-To)
+       + message, both required. Submissions
+       carry a proof-of-work: the page fetches a signed challenge from the handler
+       (?challenge), and a nonce satisfying it must be supplied. Humans click
+       Solve (the browser grinds it, ~1s); agents reading this page can compute
+       SHA256(challenge ":" nonce) with 5 leading hex zeros themselves and POST
+       challenge + sig + nonce directly. The server only verifies. */ -}}
+{{- $cfMsgs := dict
+  "solving"     (i18n "cfSolving")
+  "solved"      (i18n "cfSolved")
+  "solve"       (i18n "contactSolve")
+  "sending"     (i18n "cfSending")
+  "sent"        (i18n "cfSent")
+  "bademail"    (i18n "cfBadEmail")
+  "required"    (i18n "cfRequired")
+  "powfail"     (i18n "cfPowFail")
+  "sendfail"    (i18n "cfSendFail")
+  "error"       (i18n "cfError")
+  "loading"     (i18n "cfLoading")
+  "unavailable" (i18n "cfUnavailable") -}}
+<form class="contact-form" method="POST" data-i18n="{{ $cfMsgs | jsonify }}"{{ with site.Params.contactEndpoint }} action="{{ . }}"{{ end }}>
+  <p class="status-area"><span></span></p>
+  <p>
+    <label for="cf-email">{{ i18n "contactEmailLabel" }}</label>
+    <input id="cf-email" type="email" name="email" autocomplete="email" required>
+  </p>
+  <p>
+    <label for="cf-message">{{ i18n "contactMessageLabel" }}</label>
+    <textarea id="cf-message" name="message" rows="7" required></textarea>
+  </p>
+  <fieldset class="cf-pow">
+    <legend>{{ i18n "contactAntiSpam" }}</legend>
+    <p>{{ i18n "contactPowGiven" }} <code>SHA-256("<span class="cf-pow-challenge">...</span>:" + nonce)</code>,<br>
+       {{ i18n "contactPowFind" }} <span class="cf-pow-zeros">00000</span>.</p>
+    <p class="cf-pow-human">{{ i18n "contactHuman" }}</p>
+    <p class="cf-pow-row">
+      <input id="cf-nonce" name="nonce" aria-label="{{ i18n "contactNonce" }}" placeholder="{{ i18n "contactNonce" }}" autocomplete="off" inputmode="numeric" required>
+      <button type="button" class="cf-pow-solve">{{ i18n "contactSolve" }}</button>
+    </p>
+    <input type="hidden" name="challenge" value="">
+    <input type="hidden" name="sig" value="">
+  </fieldset>
+  <p><button type="submit">{{ i18n "contactSend" }}</button></p>
+</form>
+<script src="/js/contact.js" defer></script>

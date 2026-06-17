@@ -1,0 +1,231 @@
+/* ── emptyname additions (tags, gallery) — kept separate from the theme ── */
+
+/* ── base overrides (colors, sidebar, content width; merged from custom.css) ── */
+body { background-color: #fff; }
+a { color: #9914DB; }
+h1, h2 { color: #000; }
+h3, h4, h5, h6 { color: #666; }
+.post { background-color: #fff; }
+.post-content { font-family: 'Crimson Text', 'Times New Roman', 'Times', serif; font-size: 1.25em; color: #333; }
+.post-content > *:first-child { margin-top: 0 !important; }
+.post-content > *:last-child { margin-bottom: 0 !important; }
+.post-content blockquote { padding: 25px 25px 25px 45px; margin-bottom: 1.25em; }
+.post-content blockquote p:last-child { margin-bottom: 0; }
+.sidebar { background-color: #000; }
+.sidebar a { color: #aaa; text-decoration: none; }
+.wrapper-inner { width: 1000px; max-width: 84%; margin: 0 auto; }
+
+
+/* Content column: anchor it to the top with a fixed, generous top margin.
+   The theme used a width-relative % top margin, so the content drifted
+   vertically as the window width changed (the "jumpy" feel). Desktop only;
+   the mobile rule (further down) still governs small screens. */
+@media (min-width: 701px) {
+  .wrapper { margin-top: 5rem; }
+}
+
+/* tag links under a post title */
+.post-meta.tags { margin: .2em 0 1.4em; font-family: Montserrat, sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.post-meta.tags .tag { color: #888; margin-right: .8em; white-space: nowrap; text-decoration: none; }
+.post-meta.tags .tag:hover { color: #9914DB; }
+
+/* tag / archive listing pages */
+.archive-list { margin: 0; padding: 0; list-style: none; }
+.archive-list li { padding: .4em 0; border-bottom: 1px solid #c8c8c8; display: flex; justify-content: space-between; align-items: baseline; gap: 1em; }
+.archive-list li a { font-size: 1.15em; }
+.archive-list time, .archive-list .count { color: #999; font-family: Montserrat, sans-serif; font-size: 12px; }
+.archive-back { margin-top: 1.6em; font-family: Montserrat, sans-serif; font-size: 12px; }
+
+/* ── gallery: stage + thumbnails + lightbox ── */
+.gallery { margin: 1.6em 0; }
+.gallery-stage { position: relative; background: #111; line-height: 0; cursor: zoom-in; }
+.gallery-full { display: none; width: 100%; height: auto; }
+.gallery-full.is-active { display: block; }
+.gallery-caption { text-align: center; font-family: Montserrat, sans-serif; font-size: 13px; color: #666; margin: .55em 0 .8em; min-height: 1em; line-height: 1.4; }
+.gallery-thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+.gallery-thumb { padding: 0; border: 2px solid transparent; background: none; cursor: pointer; width: 74px; height: 74px; overflow: hidden; line-height: 0; }
+.gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-thumb.is-active { border-color: #9914DB; }
+.gallery-thumb:hover { border-color: #aaa; }
+
+/* lightbox */
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.93); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.lightbox .lb-figure { margin: 0; max-width: 92vw; max-height: 88vh; text-align: center; }
+.lightbox .lb-img { max-width: 92vw; max-height: 80vh; object-fit: contain; }
+.lightbox .lb-cap { color: #ccc; font-family: Montserrat, sans-serif; font-size: 13px; margin-top: 1em; }
+.lightbox button { position: absolute; background: none; border: none; color: #fff; font-size: 42px; line-height: 1; cursor: pointer; padding: .1em .35em; opacity: .8; }
+.lightbox button:hover { opacity: 1; }
+.lb-close { top: 8px; right: 18px; }
+.lb-prev { left: 12px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
+
+/* long fxhash seeds as captions wrap cleanly */
+.gallery-caption { overflow-wrap: anywhere; }
+
+/* ════════════════════════════════════════════════════════════════════
+   POLISH PASS — overrides (this file loads last, so these win)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── gallery: fixed stage so the thumbnail row never jumps ── */
+.gallery-stage { height: clamp(240px, 52vh, 520px); display: flex; align-items: center; justify-content: center; background: #111; overflow: hidden; }
+.gallery-full { display: none; max-width: 100%; max-height: 100%; width: auto; height: auto; }
+.gallery-full.is-active { display: block; }
+.gallery { margin: 1.3em 0; }
+
+/* ── media in content behaves ── */
+.post-content img { max-width: 100%; height: auto; }
+.post-content audio { width: 100%; display: block; margin: 1em 0; }
+.work-video { margin: 1.3em 0; }
+.work-video video { width: 100%; max-height: 70vh; background: #000; display: block; }
+
+/* ── desktop: hamburger + mobile overlay menu hidden; the sidebar menu is the nav ── */
+.nav-toggle { display: none; }
+.sidebar-bottom { display: none; }
+
+/* ── language switcher (sidebar) ── */
+.lang-switcher { display: flex; flex-direction: column; align-items: flex-start; gap: .4em; margin: 1.4em 0 0; }
+.lang-switcher a { font-family: Montserrat, sans-serif; font-size: 12px; letter-spacing: .04em; text-decoration: none; opacity: .55; }
+.lang-switcher a:hover { opacity: 1; }
+.lang-switcher a.current-lang { opacity: 1; font-weight: 600; text-decoration: underline; }
+
+/* ════════════════════ MOBILE (≤ 930px) ════════════════════ */
+@media (max-width: 930px) {
+  /* drop the fixed generative body texture (messy on small screens) for a clean bg */
+  body { background-image: none !important; background-color: #fff !important; }
+
+  /* sidebar becomes a clean top bar: title centered, hamburger pinned right */
+  .sidebar { position: relative !important; inset: auto !important; width: 100% !important; padding: 16px 0 !important; background: #000 !important; background-image: none !important; }
+  .sidebar-inner { max-width: 88%; margin: 0 auto; }
+  .sidebar-top { display: flex !important; align-items: center; justify-content: center; position: relative; width: auto !important; margin: 0 !important; }
+  .blog-title { text-align: center !important; margin: 0 !important; font-size: 22px; }
+  .sidebar .robot { display: none !important; }
+  .main-menu { display: none !important; }
+  /* the top-bar switcher is hidden on mobile; the one inside the overlay menu shows instead */
+  .sidebar-top .lang-switcher { display: none !important; }
+  .mobile-menu .lang-switcher { margin-top: 2em; }
+  .mobile-menu .lang-switcher a { color: #ddd; font-size: 16px; }
+
+  /* hamburger button: bare bars at the right edge — no box, no background */
+  .nav-toggle { display: block !important; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: auto !important; margin: 0 !important; background: none !important; border: 0; padding: 10px; cursor: pointer; border-radius: 0; }
+  .nav-toggle .bars { position: relative; width: 20px; height: 14px; }
+  .nav-toggle .bar { position: absolute; left: 0; width: 20px; height: 2px; background: #fff; transition: transform .2s, opacity .2s, top .2s; }
+  .nav-toggle .bar:nth-child(1) { top: 0; }
+  .nav-toggle .bar:nth-child(2) { top: 6px; }
+  .nav-toggle .bar:nth-child(3) { top: 12px; }
+  .nav-toggle.active .bar:nth-child(1) { top: 6px; transform: rotate(45deg); }
+  .nav-toggle.active .bar:nth-child(2) { opacity: 0; }
+  .nav-toggle.active .bar:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+  /* full-screen overlay menu */
+  .sidebar-bottom { display: none; }
+  body.menu-open { overflow: hidden; }
+  body.menu-open .sidebar-bottom { display: block; }
+  .mobile-menu { position: fixed; inset: 0; z-index: 1000; margin: 0; padding: 5em 10% 2em !important; background: #000; display: flex; flex-direction: column; overflow-y: auto; }
+  .mobile-menu li { margin: .55em 0 !important; list-style: none; }
+  .mobile-menu a { color: #ddd; font-family: Montserrat, sans-serif; font-size: 20px; text-decoration: none; }
+  .mobile-menu a:hover, .mobile-menu a:active { color: #9914DB; }
+  body.menu-open .nav-toggle { position: fixed; top: 16px; right: 6%; transform: none; z-index: 1001; }
+
+  /* content full width */
+  .wrapper { margin: 8% 0 !important; }
+  .wrapper-inner { width: auto !important; max-width: 86% !important; margin: 0 auto !important; }
+  .post-title { font-size: 30px; }
+  .gallery-thumb { width: 60px; height: 60px; }
+}
+
+/* ── heading anchors: linkable chapters (§ revealed on hover) ── */
+.post-content :is(h2,h3,h4,h5,h6) > .hanchor { margin-left: .4em; font-size: .75em; text-decoration: none; color: #888; opacity: 0; transition: opacity .15s; }
+.post-content :is(h2,h3,h4,h5,h6):hover > .hanchor, .post-content .hanchor:focus-visible { opacity: 1; }
+.post-content .hanchor:hover { color: #9914DB; }
+@media (hover: none) { .post-content :is(h2,h3,h4,h5,h6) > .hanchor { opacity: .45; } }
+
+/* ── long URLs / words wrap instead of overflowing ── */
+.post-content { overflow-wrap: break-word; }
+.post-content pre { overflow-x: auto; }
+
+/* ── home landing: recent entries + tag cloud ── */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.home-entry { margin: 0 0 1.8em; padding: 0 0 1.8em; border-bottom: 1px solid #c8c8c8; }
+.home-entry-image { display: block; margin: 0 0 .7em; line-height: 0; }
+.home-entry-image img { width: 100%; height: auto; display: block; }
+.lead-image { display: block; margin: 0 0 1.4em; line-height: 0; }
+.lead-image img { width: 100%; height: auto; display: block; }
+.sq-thumb { display: inline-block; line-height: 0; }
+.sq-thumb img { object-fit: cover; display: block; }
+.artwork-square .sq-thumb img { width: 150px; height: 150px; }
+.home-entry-title { margin: 0 0 .4em; font-size: 1.25em; line-height: 1.25; }
+.home-entry-title a { text-decoration: none; }
+.home-entry-title a:hover { color: #9914DB; }
+.home-entry-teaser { margin: 0; color: #444; }
+.home-tags { margin-top: 1.8em; }
+.home-tags .tag { display: inline-block; margin: 0 .8em .4em 0; }
+
+/* ── artwork: standalone items + inline embeds ── */
+.lightbox-trigger { display: inline-block; line-height: 0; cursor: zoom-in; }
+.artwork-full { margin: 1.3em 0; }
+.artwork-full img { max-width: 100%; height: auto; display: block; }
+
+/* inline illustration: a small floated thumbnail, text flows beside it */
+.artwork-embed { margin: .4em 0 1em; max-width: 320px; }
+.artwork-embed > a { display: block; line-height: 0; }
+.artwork-embed img { max-width: 100%; height: auto; display: block; }
+.artwork-embed figcaption { font-family: Montserrat, sans-serif; font-size: 13px; color: #666; margin-top: .5em; line-height: 1.4; text-align: center; }
+.artwork-embed figcaption a { color: #888; text-decoration: none; }
+.artwork-embed figcaption a:hover { color: #9914DB; }
+.artwork-embed.artwork-block { float: none; max-width: 100%; margin: 1.6em 0; }
+.artwork-embed.artwork-block img { width: 100%; }
+.artwork-right  { float: right; margin-left: 1.6em; }
+.artwork-left   { float: left;  margin-right: 1.6em; }
+.artwork-center { float: none; margin-left: auto; margin-right: auto; }
+
+/* video / audio media on an artwork page */
+.artwork-media { margin: 1.3em 0; }
+.artwork-media video { max-width: 100%; height: auto; display: block; }
+.artwork-media audio { width: 100%; }
+.artwork-media figcaption { font-family: Montserrat, sans-serif; font-size: 13px; color: #666; margin-top: .5em; }
+.artwork-appears { margin: 1.4em 0 0; font-family: Montserrat, sans-serif; font-size: 13px; color: #888; }
+.artwork-appears ul { list-style: none; margin: .3em 0 0; padding: 0; }
+.artwork-appears li { margin: .15em 0; }
+.artwork-appears a, .artwork-all a { color: #888; }
+.artwork-appears a:hover, .artwork-all a:hover { color: #9914DB; }
+.artwork-all { margin: .8em 0 0; font-family: Montserrat, sans-serif; font-size: 13px; }
+
+/* the artwork index grid */
+.artwork-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin: 1.4em 0; }
+.artwork-card { text-decoration: none; }
+.artwork-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+.artwork-card-title { display: block; font-family: Montserrat, sans-serif; font-size: 12px; color: #888; margin-top: .4em; line-height: 1.3; }
+.artwork-card:hover .artwork-card-title { color: #9914DB; }
+
+/* lightbox: title + (optional) description line */
+.lightbox .lb-title { display: block; color: #eee; }
+.lightbox .lb-desc { display: block; color: #aaa; margin: .4em auto 0; max-width: 60ch; }
+
+@media (max-width: 600px) {
+  .artwork-embed { float: none; max-width: 100%; margin-left: 0; margin-right: 0; }
+}
+
+/* ── contact form ── */
+.contact-form { max-width: 34em; }
+.contact-form p { margin: 0 0 1.1em; }
+.contact-form label { display: block; font-family: Montserrat, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: .03em; color: #555; margin-bottom: .35em; }
+.contact-form .optional { text-transform: none; color: #999; }
+.contact-form input, .contact-form textarea { width: 100%; padding: .6em .7em; border: 1px solid #bbb; background: #fff; font-family: inherit; font-size: 1rem; color: #222; box-sizing: border-box; }
+.contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #9914DB; }
+.contact-form textarea { resize: vertical; }
+.contact-form button { font-family: Montserrat, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; background: #000; color: #fff; border: 0; padding: .8em 1.8em; cursor: pointer; }
+.contact-form button:hover { background: #9914DB; }
+.contact-form .cf-pow-zeros { font-family: Menlo, Monaco, monospace; font-size: 15px; }
+.contact-form .cf-pow-row { display: flex; gap: 0; align-items: stretch; }
+.contact-form .cf-pow-row #cf-nonce { flex: 1 1 auto; width: auto; }
+.contact-form .cf-pow-solve { flex: 0 0 auto; width: 12em; box-sizing: border-box; padding: 0 0 0 1em; text-align: left; background: #666; }
+
+/* contact form — AJAX status */
+.contact-form .status-area { margin: 0 0 1em; min-height: 1.3em; }
+.contact-form .status-area span { display: none; font-family: Montserrat, sans-serif; font-size: 14px; }
+.contact-form.disabled { opacity: .55; pointer-events: none; }
+
+/* ── site footer (version + licence) ── */
+.site-footer { margin-top: 3rem; padding-top: 1.1rem; border-top: 1px solid #ddd; font-family: Montserrat, sans-serif; font-size: 12px; color: #999; }
+.site-footer a { color: #999; }
+.site-footer a:hover { color: #9914DB; }

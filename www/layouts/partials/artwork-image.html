@@ -1,0 +1,11 @@
+{{- /* Big image of an artwork's primary image (natural aspect), linking to `href`.
+       dict: id, href, width (px, default 1200), class (optional).
+       Renders nothing if the id doesn't resolve. */ -}}
+{{- with site.GetPage (printf "/artwork/%s" .id) -}}
+  {{- $img := index .Params.images 0 -}}
+  {{- $w := $.width | default 1200 -}}
+  {{- $href := or $.href .RelPermalink -}}
+  {{- $src := $img -}}{{- $dim := "" -}}
+  {{- with resources.Get (strings.TrimPrefix "/" $img) }}{{ with .Resize (printf "%dx webp" $w) }}{{ $src = .RelPermalink }}{{ $dim = printf "width=\"%d\" height=\"%d\"" .Width .Height }}{{ end }}{{ end -}}
+  <a class="img-link{{ with $.class }} {{ . }}{{ end }}" href="{{ $href }}"><img src="{{ $src }}" {{ $dim | safeHTMLAttr }} alt="{{ .Title }}" loading="lazy" decoding="async"></a>
+{{- end -}}

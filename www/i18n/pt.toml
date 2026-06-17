@@ -1,0 +1,55 @@
+# UI strings - Português (europeu)
+robotAlt = "A marca da emptyname - um pequeno robô desenhado a traço."
+languageLabel = "Idioma"
+
+# Formulário de contacto
+contactEmailLabel = "O teu email"
+contactMessageLabel = "A tua mensagem"
+contactAntiSpam = "Anti-spam"
+contactPowGiven = "Dado"
+contactPowFind = "encontra um nonce cujo hash comece por"
+contactHuman = "Se és humano, clica em Resolver."
+contactSolve = "Resolver"
+contactSend = "Enviar"
+contactNonce = "nonce"
+
+allArtworks = "Todas as obras"
+appearsIn = "Aparece em"
+
+viewImage = "Ver imagem {{ .n }}"
+
+# Formulário de contacto - mensagens de estado JS (passadas ao contact.js via data-i18n)
+cfSolving = "a resolver"
+cfSolved = "resolvido ✓"
+cfSending = "A enviar a tua mensagem..."
+cfSent = "A tua mensagem foi enviada."
+cfBadEmail = "Introduz um endereço de email válido."
+cfRequired = "Introduz um email e uma mensagem."
+cfPowFail = "A verificação anti-spam falhou - carrega em Resolver e depois envia."
+cfSendFail = "Lamentamos - não foi possível enviar a tua mensagem."
+cfError = "Lamentamos - algo correu mal."
+cfLoading = "...a carregar..."
+cfUnavailable = "(indisponível - recarrega a página)"
+
+# Etiquetas / taxonomia
+tagTitle = "Etiquetas"
+tagBack = "← todas as etiquetas"
+
+# Etiquetas para mostrar (chave = slug da etiqueta em inglês)
+tag-generative-art = "Arte generativa"
+tag-experimental-music = "Música experimental"
+tag-graphical-scores = "Partituras gráficas"
+tag-music = "Música"
+tag-paintings = "Pinturas"
+tag-texts = "Textos"
+tag-audio = "Áudio"
+tag-nft = "NFT"
+tag-performance = "Performance"
+tag-ai = "IA"
+tag-philosophy-of-art = "Filosofia da arte"
+
+anchorLabel = "Ligação para esta secção"
+
+[tagCount]
+one = "{{ . }} obra com esta etiqueta"
+other = "{{ . }} obras com esta etiqueta"

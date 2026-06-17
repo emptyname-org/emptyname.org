@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang }}">
+<head>
+{{ partial "head.html" . }}
+</head>
+<body class="{{ if .IsHome }}home {{ end }}page">
+{{ partial "sidebar.html" . }}
+<div class="wrapper" id="wrapper">
+  <div class="section-inner wrapper-inner">
+    <div class="content">
+      {{ block "main" . }}{{ end }}
+      <footer class="site-footer">v1 &middot; <a href="{{ "faal" | relLangURL }}">faal</a></footer>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var t=document.querySelector('.nav-toggle');
+  if(!t) return;
+  function close(){document.body.classList.remove('menu-open');t.classList.remove('active');t.setAttribute('aria-expanded','false');}
+  t.addEventListener('click',function(){
+    var open=document.body.classList.toggle('menu-open');
+    t.classList.toggle('active',open);
+    t.setAttribute('aria-expanded',open?'true':'false');
+  });
+  document.querySelectorAll('.mobile-menu a').forEach(function(a){a.addEventListener('click',close);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script src="/js/gallery.js" defer></script>
+</body>
+</html>

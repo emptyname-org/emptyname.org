@@ -1,0 +1,26 @@
+{{- $work := cond .IsHome "WebSite" "CreativeWork" -}}
+{{- $sameAs := slice -}}
+{{- with site.Params.orcid }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+{{- with site.Params.github }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{ $work }}",
+  "@id": "{{ .Permalink }}#{{ cond .IsHome "site" "work" }}",
+  "name": {{ .Title | jsonify | safeJS }},
+  "url": "{{ .Permalink }}",
+  {{ with .Description }}"description": {{ . | jsonify | safeJS }},
+  {{ end }}{{ if not .IsHome }}"datePublished": "{{ .Date.Format "2006-01-02" }}",
+  {{ end }}"inLanguage": "{{ site.Language.Lang }}",
+  "license": "{{ site.Params.licenseURL }}",
+  "creditText": "free as air",
+  "creator": {
+    "@type": "Person",
+    "@id": "https://emptyname.org/#entity",
+    "name": "emptyname",
+    "url": "https://emptyname.org/"{{ with $sameAs }},
+    "sameAs": {{ . | jsonify | safeJS }}{{ end }}
+  }{{ if not .IsHome }},
+  "isPartOf": { "@type": "WebSite", "@id": "https://emptyname.org/#site", "name": "emptyname", "url": "https://emptyname.org/" }{{ end }}
+}
+</script>

@@ -1,0 +1,38 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+{{ $displayTitle := .Title }}{{ if eq .Kind "term" }}{{ $displayTitle = i18n (printf "tag-%s" (urlize .Title)) }}{{ else if eq .Kind "taxonomy" }}{{ $displayTitle = i18n "tagTitle" }}{{ end }}
+{{ $title := cond .IsHome site.Title (printf "%s - %s" $displayTitle site.Title) }}
+<title>{{ $title }}</title>
+{{ $desc := or .Description site.Params.description }}
+<meta name="description" content="{{ $desc }}">
+<link rel="canonical" href="{{ with .Params.canonical }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}">
+{{ with .AllTranslations -}}
+{{ range . }}<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
+{{ end -}}
+{{ range . }}{{ if eq .Language.Lang "en" }}<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{ end }}{{ end -}}
+{{ end -}}
+<link rel="license" href="{{ site.Params.licenseURL }}">
+{{ with site.Params.orcid }}<link rel="me" href="{{ . }}">{{ end }}
+{{ with site.Params.github }}<link rel="me" href="{{ . }}">{{ end }}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ "index.xml" | absLangURL }}">
+{{ range .AlternativeOutputFormats -}}
+<link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .Permalink }}">
+{{ end -}}
+<meta property="og:site_name" content="emptyname">
+{{ $ogl := dict "en" "en_US" "es" "es_ES" "pt" "pt_PT" "fr" "fr_FR" -}}
+{{ $curlang := site.Language.Lang -}}
+<meta property="og:locale" content="{{ index $ogl $curlang }}">
+{{ range hugo.Sites }}{{ if ne .Language.Lang $curlang }}<meta property="og:locale:alternate" content="{{ index $ogl .Language.Lang }}">
+{{ end }}{{ end -}}
+<meta property="og:title" content="{{ $displayTitle }}">
+<meta property="og:type" content="{{ cond .IsHome "website" "article" }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta name="twitter:card" content="summary">
+{{ $css := slice (resources.Get "css/fonts.css") (resources.Get "css/rams.css") (resources.Get "css/site.css") | resources.Concat "css/bundle.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ partial "jsonld.html" . }}

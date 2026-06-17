@@ -1,0 +1,149 @@
+baseURL = 'https://emptyname.org/'
+locale = 'en'
+title = 'emptyname'
+enableRobotsTXT = true
+enableEmoji = false
+summaryLength = 30
+# Don't auto-title-case taxonomy/section titles - preserve term names verbatim so a
+# tag like "NFT" stays "NFT" (not "Nft"). On-screen tag labels are localized via i18n
+# (keys tag-<slug> in i18n/*.toml); the tag value in front-matter stays English.
+titleCaseStyle = 'none'
+
+# ── Languages ─────────────────────────────────────────────────────────────
+# English is canonical and stays at the root (/) so existing URLs never move;
+# es/pt/fr live under /es/, /pt/, /fr/. Untranslated pages fall back to English,
+# so the site is never broken while translations are filled in one file at a time.
+# A translation is just a sibling file:  content/<work>/index.es.md  (etc.)
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    label = 'English'
+    locale = 'en-US'
+    weight = 1
+  [languages.es]
+    label = 'Español'
+    locale = 'es-ES'
+    weight = 2
+    # llms.txt is a single canonical English guide at the site root - don't emit a
+    # half-localised /es/llms.txt. Page twins (.md/.txt) are preserved explicitly.
+    [languages.es.outputs]
+      home = ['html', 'rss']
+      page = ['html', 'md', 'txt']
+      section = ['html', 'rss']
+  [languages.pt]
+    label = 'Português'
+    locale = 'pt-PT'
+    weight = 3
+    [languages.pt.outputs]
+      home = ['html', 'rss']
+      page = ['html', 'md', 'txt']
+      section = ['html', 'rss']
+  [languages.fr]
+    label = 'Français'
+    locale = 'fr-FR'
+    weight = 4
+    [languages.fr.outputs]
+      home = ['html', 'rss']
+      page = ['html', 'md', 'txt']
+      section = ['html', 'rss']
+# Tags is the only taxonomy. A page joins a tag just by listing it in its
+# front-matter:  tags = ["Paintings", "Texts"]
+[taxonomies]
+  tag = 'tags'
+
+# ── Mounts ────────────────────────────────────────────────────────────────
+# static/uploads is ALSO mounted as assets/uploads so the gallery shortcode can
+# generate real thumbnails (Hugo image processing works on assets, not static).
+# The originals keep being served verbatim from static/ at unchanged URLs.
+# NOTE: declaring any mount replaces ALL defaults, so the defaults are restated.
+[module]
+  [[module.mounts]]
+    source = 'archetypes'
+    target = 'archetypes'
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+  [[module.mounts]]
+    source = 'content'
+    target = 'content'
+  [[module.mounts]]
+    source = 'data'
+    target = 'data'
+  [[module.mounts]]
+    source = 'i18n'
+    target = 'i18n'
+  [[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+  [[module.mounts]]
+    source = 'static'
+    target = 'static'
+  [[module.mounts]]
+    source = 'static/uploads'
+    target = 'assets/uploads'
+
+[params]
+  description = 'emptyname.org is a growing body of works - paintings, NFTs, graphical scores, and texts. All content is free as air (CC0).'
+  license = 'CC0-1.0'
+  licenseURL = 'https://creativecommons.org/publicdomain/zero/1.0/'
+  faal = 'https://emptyname.org/faal'
+  # HOME: a dedicated landing built by layouts/index.html — the top 3 main-menu (navbar)
+  # entries (clickable title + teaser) followed by every site tag (clickable). Its
+  # metadata is GENERAL, from content/_index*.md (title "emptyname", the general
+  # description above, self-canonical /). No per-article edits to the home, ever.
+  # (frontPage is no longer read; the landing isn't a single-work mirror.)
+  frontPage = ''
+  # Contact form destination - the PHP handler in the site (sends via postfix).
+  contactEndpoint = '/contact/message.php'
+  # ORCID iD URL - wires the Person entity's sameAs + a rel=me verification link.
+  orcid = 'https://orcid.org/0009-0001-3043-4649'
+  # GitHub profile - identity anchor (sameAs + rel=me); the reciprocal rel=me is the
+  # Website field set on the profile itself. Not a propagation target.
+  github = 'https://github.com/emptyname-org'
+
+# allow raw HTML from the migrated content (audio/video embeds, etc.)
+[markup.goldmark.renderer]
+  unsafe = true
+# keep punctuation literal: no smart-quotes, em/en dashes, or ellipsis substitution
+# (straight quotes stay straight, "..." stays three dots, "-" stays a hyphen)
+[markup.goldmark.extensions.typographer]
+  disable = true
+
+# default quality for all processed images (so partials don't repeat q85)
+[imaging]
+  quality = 85
+
+# machine-first: every page also emits a plain-text and a markdown twin
+[mediaTypes.'text/markdown']
+  suffixes = ['md']
+
+[outputFormats.MD]
+  mediaType = 'text/markdown'
+  suffix = 'md'
+  isPlainText = true
+[outputFormats.TXT]
+  mediaType = 'text/plain'
+  suffix = 'txt'
+  isPlainText = true
+# llms.txt - a machine-readable guide to the site for LLMs (auto-generated from content)
+[outputFormats.LLMS]
+  mediaType = 'text/plain'
+  baseName = 'llms'
+  isPlainText = true
+  rel = 'alternate'
+
+[outputs]
+  home = ['html', 'rss', 'LLMS']
+  page = ['html', 'md', 'txt']
+  section = ['html', 'rss']
+
+# ── Sidebar menu ──────────────────────────────────────────────────────────
+# Only EXTERNAL / fixed links live here, per-language under [languages.*.menus]
+# (none at the moment - social links removed 2026-06-11, to be re-added as a set;
+# the last shape was: [[languages.<lang>.menus.main]] with name/url/weight, identical
+# in every language). Every work or page adds
+# ITSELF to its own language's menu from its front-matter:  [menu.main]\n  weight = N
+# So to add a work to the menu you never touch this file - just set a weight in
+# the work (and in each translation). To reorder, change weights. Works use 1–10 (contact: 11); weight 0 means UNSET in Hugo menus (sorts last, not first); equal weights tie-break by name, case-insensitively.
