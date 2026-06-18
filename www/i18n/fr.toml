@@ -3,33 +3,23 @@ robotAlt = "La marque d'emptyname - un petit robot dessiné au trait."
 languageLabel = "Langue"
 
 # Formulaire de contact
+contactNameLabel = "Votre nom"
 contactEmailLabel = "Votre e-mail"
 contactMessageLabel = "Votre message"
-contactAntiSpam = "Anti-spam"
-contactPowGiven = "Étant donné"
-contactPowFind = "trouvez un nonce dont le hachage commence par"
-contactHuman = "Si vous êtes humain, cliquez sur Résoudre."
-contactSolve = "Résoudre"
 contactSend = "Envoyer"
-contactNonce = "nonce"
 
 allArtworks = "Toutes les œuvres"
 appearsIn = "Apparaît dans"
 
 viewImage = "Voir l'image {{ .n }}"
 
-# Formulaire de contact - messages d'état JS (transmis à contact.js via data-i18n)
-cfSolving = "résolution"
-cfSolved = "résolu ✓"
+# Formulaire de contact - messages d'état JS (transmis à script.js via data-i18n)
 cfSending = "Envoi de votre message..."
 cfSent = "Votre message a été envoyé."
 cfBadEmail = "Veuillez saisir une adresse e-mail valide."
 cfRequired = "Veuillez saisir un e-mail et un message."
-cfPowFail = "Échec de la vérification anti-spam - cliquez sur Résoudre, puis envoyez."
 cfSendFail = "Désolé - l'envoi de votre message a échoué."
 cfError = "Désolé - une erreur s'est produite."
-cfLoading = "...chargement..."
-cfUnavailable = "(indisponible - rechargez la page)"
 
 # Étiquettes / taxonomie
 tagTitle = "Étiquettes"

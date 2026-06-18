@@ -215,10 +215,6 @@ h3, h4, h5, h6 { color: #666; }
 .contact-form textarea { resize: vertical; }
 .contact-form button { font-family: Montserrat, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; background: #000; color: #fff; border: 0; padding: .8em 1.8em; cursor: pointer; }
 .contact-form button:hover { background: #9914DB; }
-.contact-form .cf-pow-zeros { font-family: Menlo, Monaco, monospace; font-size: 15px; }
-.contact-form .cf-pow-row { display: flex; gap: 0; align-items: stretch; }
-.contact-form .cf-pow-row #cf-nonce { flex: 1 1 auto; width: auto; }
-.contact-form .cf-pow-solve { flex: 0 0 auto; width: 12em; box-sizing: border-box; padding: 0 0 0 1em; text-align: left; background: #666; }
 
 /* contact form — AJAX status */
 .contact-form .status-area { margin: 0 0 1em; min-height: 1.3em; }

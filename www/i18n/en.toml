@@ -3,33 +3,23 @@ robotAlt = "The emptyname mark - a small line-drawn robot."
 languageLabel = "Language"
 
 # Contact form
+contactNameLabel = "Your name"
 contactEmailLabel = "Your email"
 contactMessageLabel = "Your message"
-contactAntiSpam = "Anti-spam"
-contactPowGiven = "Given"
-contactPowFind = "find a nonce whose hash starts with"
-contactHuman = "If you're human, click Solve."
-contactSolve = "Solve"
 contactSend = "Send"
-contactNonce = "nonce"
 
 allArtworks = "All artworks"
 appearsIn = "Appears in"
 
 viewImage = "View image {{ .n }}"
 
-# Contact form - JS status messages (passed to contact.js via a data-i18n attribute)
-cfSolving = "solving"
-cfSolved = "solved ✓"
+# Contact form - JS status messages (passed to script.js via a data-i18n attribute)
 cfSending = "Sending your message..."
 cfSent = "Your message has been sent."
 cfBadEmail = "Please enter a real email address."
 cfRequired = "Please enter an email and a message."
-cfPowFail = "Anti-spam check failed - click Solve, then send."
 cfSendFail = "Sorry - failed to send your message."
 cfError = "Sorry - something went wrong."
-cfLoading = "...loading..."
-cfUnavailable = "(unavailable - reload the page)"
 
 # Tags / taxonomy UI
 tagTitle = "Tags"
