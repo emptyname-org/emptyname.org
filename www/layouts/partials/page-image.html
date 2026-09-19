@@ -1,0 +1,49 @@
+{{- /* Resolve authored image choices in one place. Context determines priority:
+       card: representative artwork first; index: the record's own image first;
+       lead: only the explicitly displayed illustration; stage: first media;
+       metadata: explicit image, own media, representative artwork, site fallback.
+       Returns source, caption, alt, destination and optional display width. */ -}}
+{{- $page := .page -}}
+{{- $mode := .mode | default "stage" -}}
+{{- $artworkID := partial "post-artwork-id.html" $page -}}
+{{- if eq $mode "lead" }}{{ $artworkID = $page.Params.thumb }}{{ end -}}
+{{- $artwork := false -}}
+{{- with $artworkID }}{{ with site.GetPage (printf "/artwork/%s" .) }}{{ $artwork = . }}{{ end }}{{ end -}}
+{{- $representative := "" -}}
+{{- with $artwork }}{{ with .Params.images }}{{ $representative = index . 0 }}{{ end }}{{ end -}}
+{{- $own := "" }}{{ with $page.Params.images }}{{ $own = index . 0 }}{{ end -}}
+{{- $media := "" }}{{ $mediaAlt := "" -}}
+{{- range $page.Params.media }}{{ if and (eq .type "image") (not $media) }}{{ $media = .src }}{{ $mediaAlt = or .alt "" }}{{ end }}{{ end -}}
+{{- $poster := "" -}}
+{{- with findRESubmatch `<video[^>]*\bposter=["']([^"']+)["']` $page.RawContent 1 }}{{ $poster = index (index . 0) 1 }}{{ end -}}
+{{- $src := "" }}{{ $caption := $page.Title }}{{ $alt := $page.Title }}{{ $href := $page.RelPermalink }}{{ $width := 0 -}}
+{{- if eq $mode "card" -}}
+  {{- $src = or $representative $page.Params.image $media $poster site.Params.ogImage -}}
+  {{- $width = 1200 -}}
+  {{- if and $representative (eq $src $representative) }}{{ $caption = $artwork.Title }}{{ $alt = $artwork.Title -}}
+  {{- else if $page.Params.image }}{{ $alt = or $page.Params.imageAlt $page.Title -}}
+  {{- else if $media }}{{ $alt = or $mediaAlt $page.Title }}{{ end -}}
+{{- else if eq $mode "index" -}}
+  {{- $src = or $own $page.Params.image $representative $poster site.Params.ogImage -}}
+{{- else if eq $mode "metadata" -}}
+  {{- $src = or $page.Params.image $media $representative site.Params.ogImage -}}
+  {{- $alt = "" -}}
+  {{- if $page.Params.image }}{{ $alt = or $page.Params.imageAlt "" -}}
+  {{- else if $media }}{{ $alt = $mediaAlt -}}
+  {{- else if $representative -}}
+    {{- range $artwork.Params.media }}{{ if and (eq .type "image") (eq .src $representative) }}{{ $alt = or .alt "" }}{{ end }}{{ end -}}
+  {{- end -}}
+{{- else if eq $mode "lead" -}}
+  {{- if $page.Params.image -}}
+    {{- $src = $page.Params.image }}{{ $href = $src }}{{ $caption = "" }}{{ $alt = or $page.Params.imageAlt $page.Title -}}
+    {{- with $page.Params.imageArtwork }}{{ with site.GetPage (printf "/artwork/%s" .) }}{{ $href = .RelPermalink }}{{ $caption = .Title }}{{ end }}{{ end -}}
+  {{- else if and $page.Params.thumb (not ($page.HasShortcode "gallery")) (not ($page.HasShortcode "artwork")) $artwork -}}
+    {{- $src = $representative }}{{ $href = $artwork.RelPermalink }}{{ $caption = $artwork.Title }}{{ $alt = $artwork.Title -}}
+  {{- end -}}
+  {{- $width = 1200 -}}
+{{- else -}}
+  {{- $lead := partial "page-image.html" (dict "page" $page "mode" "lead") -}}
+  {{- $src = or $lead.src $media $representative -}}
+  {{- if $lead.src }}{{ $width = 1200 }}{{ end -}}
+{{- end -}}
+{{- return (dict "src" (or $src "") "alt" $alt "caption" $caption "href" $href "displayWidth" $width) -}}

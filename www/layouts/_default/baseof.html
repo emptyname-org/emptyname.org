@@ -1,32 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.Lang }}">
-<head>
-{{ partial "head.html" . }}
-</head>
-<body class="{{ if .IsHome }}home {{ end }}page">
-{{ partial "sidebar.html" . }}
-<div class="wrapper" id="wrapper">
-  <div class="section-inner wrapper-inner">
-    <div class="content">
-      {{ block "main" . }}{{ end }}
-      <footer class="site-footer">v1 &middot; <a href="{{ "faal" | relLangURL }}">faal</a></footer>
-    </div>
-  </div>
+<head>{{ partial "head.html" . }}</head>
+{{- $hasMedia := or .IsHome .Params.image .Params.thumb .Params.media (.HasShortcode "gallery") (.HasShortcode "artwork") (strings.Contains .Content "<video") (and (in (slice "section" "term") .Kind) (gt (len .Pages) 0)) -}}
+{{- $imageShare := 64 -}}{{ if and .IsPage (in .Params.tags "Texts") (not (.HasShortcode "gallery")) }}{{ $imageShare = 36 }}{{ end -}}
+{{- $readingKind := "Text" -}}{{ if in (slice "home" "term" "taxonomy" "section") .Kind }}{{ $readingKind = "Index" }}{{ end -}}
+<body class="{{ if .IsHome }}home {{ end }}page" data-kind="{{ .Kind }}" data-image-share="{{ $imageShare }}"{{ if $hasMedia }} data-media="true" style="--media-ratio:{{ partial "boundary-initial-ratio.html" . }}"{{ end }}>
+<div class="shell">
+{{ partial "boundary-header.html" (dict "page" .) }}
+<main class="work" id="main">
+ {{ $title := .Title }}{{ if .IsHome }}{{ $title = site.Title }}{{ else if eq .Kind "term" }}{{ $title = i18n (printf "tag-%s" (urlize .Title)) }}{{ else if eq .Kind "taxonomy" }}{{ $title = i18n "tagTitle" }}{{ end }}
+ <div class="title-rail"><div class="rail-title" style="--title-characters:{{ len (split $title "") }}" aria-hidden="true">{{ $title }}</div></div>
+ <div class="surface{{ if $hasMedia }} has-media{{ end }}" data-mode="together">
+  <section class="painting-pane" hidden aria-label="{{ i18n "boundaryImage" }}"><div class="painting"></div><div class="painting-footer"><div class="plate-name" aria-live="polite"></div><div class="thumbs" role="group" aria-label="{{ i18n "boundarySelection" }}"></div></div></section>
+  <div class="splitter" hidden role="separator" tabindex="0" aria-orientation="vertical" aria-label="{{ i18n "boundaryResize" }}" aria-controls="reading" aria-valuemin="28" aria-valuemax="78" aria-valuenow="{{ $imageShare }}"></div>
+  <section class="text-pane" id="reading" tabindex="-1">{{ block "main" . }}{{ end }}</section>
+ </div>
+</main>
+{{ partial "boundary-console.html" (dict "readingKind" $readingKind) }}
 </div>
-<script>
-(function(){
-  var t=document.querySelector('.nav-toggle');
-  if(!t) return;
-  function close(){document.body.classList.remove('menu-open');t.classList.remove('active');t.setAttribute('aria-expanded','false');}
-  t.addEventListener('click',function(){
-    var open=document.body.classList.toggle('menu-open');
-    t.classList.toggle('active',open);
-    t.setAttribute('aria-expanded',open?'true':'false');
-  });
-  document.querySelectorAll('.mobile-menu a').forEach(function(a){a.addEventListener('click',close);});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
-})();
-</script>
-<script src="/js/gallery.js" defer></script>
-</body>
-</html>
+{{ partial "boundary-inspection.html" . }}
+</body></html>

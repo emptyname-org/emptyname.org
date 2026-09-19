@@ -1,7 +1,9 @@
 {{ define "main" }}
-{{- /* The artworks library: a thumbnail grid of every artwork (each generated
-       from data/artworks.json). Each card → the artwork's own page. */ -}}
-<article class="single post page">
+{{- /* Individual artwork records plus explicitly indexed sound/media works.
+       Existing work pages keep their canonical URLs; recordings are not split
+       into separate entries merely because they have separate files. */ -}}
+{{- $entries := union .Pages (where site.RegularPages "Params.artworkindex" true) -}}
+<article class="single post page artwork-index">
   <div class="post-inner">
     <div class="post-header">
       <h1 class="post-title">{{ .Title }}</h1>
@@ -9,13 +11,16 @@
     <div class="post-content">
       {{ .Content }}
       <div class="artwork-grid">
-      {{- range .Pages.ByWeight }}
-        {{- $img := index .Params.images 0 -}}
-        {{- $thumb := $img -}}
-        {{- with resources.Get (strings.TrimPrefix "/" $img) }}{{ with .Fill "300x300 Center webp" }}{{ $thumb = .RelPermalink }}{{ end }}{{ end -}}
-        <a class="artwork-card" href="{{ .RelPermalink }}">
-          <img src="{{ $thumb }}" alt="{{ .Title }}" loading="lazy" decoding="async">
+      {{- range sort $entries "Date" "desc" }}
+        {{- $image := partial "page-image.html" (dict "page" . "mode" "index") -}}
+        {{- $img := $image.src -}}
+        {{- $optimized := partial "boundary-image.html" (dict "src" $img "square" true) -}}
+        {{- $thumb := $optimized.card -}}
+        {{- $indexMedium := .Params.indexMedium -}}
+        <a class="artwork-card{{ if $indexMedium }} artwork-card-sound{{ end }}" href="{{ .RelPermalink }}">
+          <img{{ if $indexMedium }} hidden{{ end }} data-view-width="{{ $optimized.width }}" data-view-height="{{ $optimized.height }}" data-caption="{{ .Title }}" data-original="{{ $img }}" data-thumb="{{ $optimized.thumb }}" data-view="{{ $optimized.src }}" data-viewset="{{ $optimized.srcset }}" src="{{ $thumb }}" alt="{{ .Title }}" loading="lazy" decoding="async">
           <span class="artwork-card-title">{{ .Title }}</span>
+          {{- with $indexMedium }}<span class="artwork-card-medium">{{ . }}</span>{{ end }}
         </a>
       {{- end }}
       </div>

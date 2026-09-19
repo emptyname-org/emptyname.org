@@ -5,14 +5,15 @@
        match across languages and Hugo links them as translations automatically -
        no special-casing needed here. */ -}}
 {{- if gt (len hugo.Sites) 1 -}}
-{{- $cur := . -}}
+{{- $cur := .page -}}
 <nav class="lang-switcher reset-list-style" aria-label="{{ i18n "languageLabel" }}">
   {{- range hugo.Sites }}
   {{- $sl := .Language.Lang -}}
   {{- $name := .Language.Label -}}
   {{- $target := .Home -}}
   {{- range $cur.AllTranslations }}{{ if eq .Language.Lang $sl }}{{ $target = . }}{{ end }}{{ end -}}
-  <a href="{{ $target.RelPermalink }}" hreflang="{{ $sl }}" lang="{{ $sl }}"{{ if eq $sl $cur.Language.Lang }} class="current-lang" aria-current="true"{{ end }}>{{ $name }}</a>
+  {{- $href := $target.RelPermalink -}}
+  <a href="{{ $href }}" hreflang="{{ $sl }}" lang="{{ $sl }}" aria-label="{{ $name }}"{{ if eq $sl $cur.Language.Lang }} class="current-lang" aria-current="true"{{ end }}>{{ upper $sl }}</a>
   {{- end }}
 </nav>
 {{- end -}}

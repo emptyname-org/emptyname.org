@@ -1,0 +1,4 @@
+{{- /* Explicit, authored emphasis; never select or shorten prose automatically. */ -}}
+{{- $content := .Page.RenderString (dict "display" "block") .Inner -}}
+{{- $content = $content | replaceRE `^<p>((?:<em>[^<]*</em>\s*(?:<br\s*/?>\s*)?)+)</p>` `<p class="epigraph">$1</p>` -}}
+<div class="opening-passage">{{ $content | safeHTML }}</div>

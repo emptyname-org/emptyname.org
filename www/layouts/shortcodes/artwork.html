@@ -1,8 +1,8 @@
 {{- /* Embed an artwork as an inline illustration in any page.
-       Usage:  {{< artwork id="smashed-mosquito-2" >}}            small floated thumbnail
-               {{< artwork id="arboreal" side="left" >}}          side = right (default) | left | center
-               {{< artwork id="umbrella-forest" size="full" >}}   big block image, full content width
-               {{< artwork id="nile" size="square" >}}            square thumbnail
+       Usage:  {{< artwork id="example-work" >}}                small floated thumbnail
+               {{< artwork id="example-work" side="left" >}}    side = right (default) | left | center
+               {{< artwork id="example-work" size="full" >}}    big block image, full content width
+               {{< artwork id="example-work" size="square" >}}  square thumbnail
        Captioned with the artwork's title (linked to its page); click → lightbox.
        All metadata comes from the artwork's page (data/artworks.json) - defined
        once, reused here. */ -}}
@@ -21,10 +21,9 @@
   {{- $img := index .Params.images 0 -}}
   {{- $first := index .Params.media 0 -}}
   {{- $alt := $first.alt | default .Title -}}
-  {{- $thumb := $img -}}
-  {{- with resources.Get (strings.TrimPrefix "/" $img) }}{{ with .Resize (printf "%s webp" (cond $big "1200x" "600x")) }}{{ $thumb = .RelPermalink }}{{ end }}{{ end -}}
+  {{- $optimized := partial "boundary-image.html" (dict "src" $img "displayWidth" (cond $big 1200 600)) -}}
   <figure class="artwork-embed {{ if $big }}artwork-block{{ else }}artwork-{{ $side }}{{ end }}">
-    <a href="{{ .RelPermalink }}"><img src="{{ $thumb }}" alt="{{ $alt }}" loading="lazy" decoding="async"></a>
+    <a href="{{ .RelPermalink }}"><img data-original="{{ $img }}" data-thumb="{{ $optimized.thumb }}" data-view="{{ $optimized.src }}" data-viewset="{{ $optimized.srcset }}" src="{{ $optimized.display }}" alt="{{ $alt }}" loading="lazy" decoding="async"></a>
     <figcaption><a href="{{ .RelPermalink }}">{{ .Title }}</a></figcaption>
   </figure>
   {{- end -}}

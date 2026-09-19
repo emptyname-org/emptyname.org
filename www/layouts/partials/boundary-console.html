@@ -1,0 +1,18 @@
+<footer class="console">
+  <a class="license" href="{{ "faal" | relLangURL }}">faal</a>
+  <div class="navigation">
+    <div class="count" aria-live="polite"><span class="selected-number"></span><span class="total"></span></div>
+    <div class="arrows" hidden>
+      <button type="button" data-step="-1" aria-label="{{ i18n "boundaryPrevious" }}">←</button>
+      <button type="button" data-step="1" aria-label="{{ i18n "boundaryNext" }}">→</button>
+    </div>
+  </div>
+  <div class="modes" hidden role="group" aria-label="{{ i18n "boundaryMode" }}">
+    {{- $labels := dict "image" "boundaryImage" "together" "boundarySplitView" "text" (printf "boundary%s" .readingKind) -}}
+    {{- $comments := dict "image" (printf "boundaryHide%s" .readingKind) "together" (printf "boundaryImageAnd%s" .readingKind) "text" "boundaryHideImage" -}}
+    {{- range slice "image" "together" "text" }}
+    <button class="mode" data-mode="{{ . }}"{{ if eq . "text" }} aria-controls="reading"{{ end }} type="button" aria-pressed="{{ if eq . "together" }}true{{ else }}false{{ end }}">{{ i18n (index $labels .) }}<span>{{ i18n (index $comments .) }}</span></button>
+    {{- end }}
+  </div>
+  <script>(()=>{const mode=document.documentElement.dataset.initialMode;if(mode)document.currentScript.parentElement.querySelectorAll(".mode").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.mode===mode)))})();</script>
+</footer>

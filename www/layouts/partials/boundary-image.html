@@ -1,0 +1,15 @@
+{{- $src := .src -}}
+{{- $result := dict "src" $src "thumb" $src "original" $src "srcset" "" "width" 0 "height" 0 "display" $src "displayWidth" 0 "displayHeight" 0 "card" $src "cardWidth" 0 "cardHeight" 0 -}}
+{{- with resources.Get (strings.TrimPrefix "/" $src) -}}
+ {{- $original := . -}}
+ {{- $view := .Fit "1600x1400 webp q82" -}}
+ {{- $small := .Fit "800x700 webp q82" -}}
+ {{- $thumb := .Fit "160x120 webp q78" -}}
+ {{- $display := $view -}}
+ {{- with $.displayWidth }}{{ $display = $original.Resize (printf "%dx webp" .) }}{{ end -}}
+ {{- $card := $src -}}
+ {{- $cardWidth := 0 }}{{ $cardHeight := 0 -}}
+ {{- if $.square }}{{ with .Fill "300x300 Center webp" }}{{ $card = .RelPermalink }}{{ $cardWidth = .Width }}{{ $cardHeight = .Height }}{{ end }}{{ end -}}
+ {{- $result = dict "src" $view.RelPermalink "thumb" $thumb.RelPermalink "original" $src "srcset" (printf "%s %dw, %s %dw" $small.RelPermalink $small.Width $view.RelPermalink $view.Width) "width" $view.Width "height" $view.Height "display" $display.RelPermalink "displayWidth" $display.Width "displayHeight" $display.Height "card" $card "cardWidth" $cardWidth "cardHeight" $cardHeight -}}
+{{- end -}}
+{{- return $result -}}

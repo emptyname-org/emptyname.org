@@ -11,7 +11,7 @@ titleCaseStyle = 'none'
 
 # ── Languages ─────────────────────────────────────────────────────────────
 # English is canonical and stays at the root (/) so existing URLs never move;
-# es/pt/fr live under /es/, /pt/, /fr/. Untranslated pages fall back to English,
+# es/fr/it/pt live under language prefixes. Untranslated pages fall back to English,
 # so the site is never broken while translations are filled in one file at a time.
 # A translation is just a sibling file:  content/<work>/index.es.md  (etc.)
 defaultContentLanguage = 'en'
@@ -35,7 +35,7 @@ defaultContentLanguageInSubdir = false
   [languages.pt]
     label = 'Português'
     locale = 'pt-PT'
-    weight = 3
+    weight = 5
     [languages.pt.outputs]
       home = ['html', 'rss']
       page = ['html', 'md', 'txt']
@@ -43,8 +43,16 @@ defaultContentLanguageInSubdir = false
   [languages.fr]
     label = 'Français'
     locale = 'fr-FR'
-    weight = 4
+    weight = 3
     [languages.fr.outputs]
+      home = ['html', 'rss']
+      page = ['html', 'md', 'txt']
+      section = ['html', 'rss']
+  [languages.it]
+    label = 'Italiano'
+    locale = 'it-IT'
+    weight = 4
+    [languages.it.outputs]
       home = ['html', 'rss']
       page = ['html', 'md', 'txt']
       section = ['html', 'rss']
@@ -54,7 +62,7 @@ defaultContentLanguageInSubdir = false
   tag = 'tags'
 
 # ── Mounts ────────────────────────────────────────────────────────────────
-# static/uploads is ALSO mounted as assets/uploads so the gallery shortcode can
+# static/media is ALSO mounted as assets/media so the gallery shortcode can
 # generate real thumbnails (Hugo image processing works on assets, not static).
 # The originals keep being served verbatim from static/ at unchanged URLs.
 # NOTE: declaring any mount replaces ALL defaults, so the defaults are restated.
@@ -81,8 +89,11 @@ defaultContentLanguageInSubdir = false
     source = 'static'
     target = 'static'
   [[module.mounts]]
-    source = 'static/uploads'
-    target = 'assets/uploads'
+    source = 'static/media'
+    target = 'assets/media'
+  [[module.mounts]]
+    source = 'static/img'
+    target = 'assets/img'
 
 [params]
   description = 'emptyname.org is a growing body of works - paintings, NFTs, graphical scores, and texts. All content is free as air (CC0).'

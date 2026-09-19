@@ -3,7 +3,7 @@
 {{- range .Params.media }}{{ if eq .type "image" }}{{ $imgItems = $imgItems | append (dict "src" .src "cap" .caption "alt" .alt) }}{{ end }}{{ end -}}
 <article class="single post page artwork">
   <div class="post-inner">
-    <div class="post-header">
+    <div class="post-header artwork-heading">
       <h1 class="post-title">{{ .Title }}</h1>
     </div>
     <div class="post-content">
@@ -26,22 +26,29 @@
         {{- end }}
       {{- end }}
       {{ .Content }}
-      {{- /* "Appears in": every page that references this artwork - a gallery id
-             line, or an {{< artwork >}} embed. Computed, so it's always accurate. */ -}}
+      <footer class="artwork-endmatter">
+      {{- /* "Appears on": gallery/embed references and displayed lead illustrations.
+             Follow the lead-image conditions in _default/single.html. */ -}}
       {{- $id := .Params.id -}}
       {{- $reLine := printf "(?m)^[ \t\r]*%s[ \t\r]*$" $id -}}
       {{- $reEmbed := printf "id=\"%s\"" $id -}}
       {{- $refs := slice -}}
       {{- range site.RegularPages -}}
         {{- if ne .Section "artwork" -}}
-          {{- if or (findRE $reLine .RawContent) (in .RawContent $reEmbed) -}}
+          {{- $illustration := false -}}
+          {{- if .Params.image -}}
+            {{- $illustration = or (eq .Params.imageArtwork $id) (in $.Params.images .Params.image) -}}
+          {{- else if and .Params.thumb (not (.HasShortcode "gallery")) (not (.HasShortcode "artwork")) -}}
+            {{- $illustration = eq .Params.thumb $id -}}
+          {{- end -}}
+          {{- if or $illustration (findRE $reLine .RawContent) (in .RawContent $reEmbed) -}}
             {{- $refs = $refs | append . -}}
           {{- end -}}
         {{- end -}}
       {{- end -}}
       {{- with $refs }}
-      <nav class="artwork-appears post-meta" aria-label="{{ i18n "appearsIn" }}">
-        <span class="artwork-appears-label">{{ i18n "appearsIn" }}:</span>
+      <nav class="artwork-appears post-meta" aria-label="{{ i18n "appearsOn" }}">
+        <span class="artwork-appears-label">{{ i18n "appearsOn" }}:</span>
         <ul>
         {{- range . }}
           <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
@@ -49,9 +56,11 @@
         </ul>
       </nav>
       {{- end }}
+      {{ partial "tags.html" . }}
       {{- with site.GetPage "/artwork" }}
       <p class="artwork-all post-meta"><a href="{{ .RelPermalink }}">{{ i18n "allArtworks" }}</a></p>
       {{- end }}
+      </footer>
       {{- /* Machine layer (canonical): one schema.org ImageObject per image. */ -}}
       {{- $nodes := slice -}}
       {{- range $imgItems -}}
@@ -62,7 +71,7 @@
               "name" .alt "caption" .alt
               "license" site.Params.licenseURL "creditText" "free as air"
               "isPartOf" $.Permalink
-              "creator" (dict "@type" "Person" "@id" "https://emptyname.org/#entity" "name" "emptyname" "url" "https://emptyname.org/")) -}}
+              "creator" (dict "@type" "Person" "@id" (printf "%s#entity" site.BaseURL) "name" site.Title "url" site.BaseURL)) -}}
       {{- end -}}
       {{- with $nodes }}
       <script type="application/ld+json">{{ (dict "@context" "https://schema.org" "@graph" .) | jsonify | safeJS }}</script>

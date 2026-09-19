@@ -1,0 +1,10 @@
+{{- /* Social / external profile links, listed from [[params.social]] in hugo.toml.
+       Used under the contact form. Each link carries rel="me" (identity anchor) and
+       opens in a new tab. Renders nothing if no social entries are configured. */ -}}
+{{- with site.Params.social }}
+<nav class="contact-social" aria-label="{{ i18n "socialLabel" }}">
+  {{- range . }}
+  <a href="{{ .url }}" rel="me noopener" target="_blank">{{ .name }}</a>
+  {{- end }}
+</nav>
+{{- end -}}

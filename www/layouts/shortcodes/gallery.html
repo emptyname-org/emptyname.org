@@ -1,8 +1,8 @@
 {{- /* Gallery: one artwork id per line (ids = files in data/artworks.json /
        pages under /artwork/). Expands each artwork's image media into the slider.
          {{< gallery >}}
-         smashed-mosquito-2
-         arboreal
+         example-work-one
+         example-work-two
          {{< /gallery >}}
        Captions/alt come from the artwork pages (single source); the canonical
        ImageObject for each image lives there, not here. */ -}}
@@ -11,9 +11,10 @@
   {{- $id := trim . " \t\r" -}}
   {{- if $id -}}
     {{- with site.GetPage (printf "/artwork/%s" $id) -}}
+      {{- $artworkURL := .RelPermalink -}}
       {{- range .Params.media -}}
         {{- if eq .type "image" -}}
-          {{- $items = $items | append (dict "src" .src "cap" .caption "alt" .alt) -}}
+          {{- $items = $items | append (dict "src" .src "cap" .caption "alt" .alt "artworkURL" $artworkURL) -}}
         {{- end -}}
       {{- end -}}
     {{- else -}}

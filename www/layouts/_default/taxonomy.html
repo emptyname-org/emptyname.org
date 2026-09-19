@@ -6,18 +6,20 @@
       {{ if eq .Kind "term" }}<p class="post-meta">{{ i18n "tagCount" (len .Pages) }}</p>{{ end }}
     </div>
     <div class="post-content">
-      <ul class="archive-list reset-list-style">
       {{ if eq .Kind "term" }}
+      <section class="home-recent">
         {{ range .Pages.ByDate.Reverse }}
-        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time></li>
+        {{ partial "page-card.html" . }}
         {{ end }}
+      </section>
+      <p class="archive-back"><a href="{{ "/tags/" | relLangURL }}">{{ i18n "tagBack" }}</a></p>
       {{ else }}
+      <ul class="archive-list reset-list-style">
         {{ range .Data.Terms.Alphabetical }}
         <li><a href="{{ .Page.RelPermalink }}">{{ i18n (printf "tag-%s" (urlize .Page.Title)) }}</a> <span class="count">{{ .Count }}</span></li>
         {{ end }}
-      {{ end }}
       </ul>
-      {{ if eq .Kind "term" }}<p class="archive-back"><a href="{{ "/tags/" | relLangURL }}">{{ i18n "tagBack" }}</a></p>{{ end }}
+      {{ end }}
     </div>
   </div>
 </article>

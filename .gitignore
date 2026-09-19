@@ -1,3 +1,14 @@
 public/
 resources/
 .hugo_build.lock
+www/content/
+www/data/
+www/static/media/
+www/static/uploads/
+www/static/duck-time/
+www/static/riverscape/
+www/assets/media/
+www/assets/duck-time/
+www/assets/riverscape/
+www/static/img/*
+!www/static/img/robot.png

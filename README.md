@@ -6,12 +6,14 @@ This is the engine only. The content (the paintings, generative works, and texts
 
 ## What is here
 
-- `www/layouts` templates, partials, shortcodes (the machine-first layer: HTML + `.md`/`.txt` twins, JSON-LD, RSS, sitemaps, `llms.txt`)
+- `www/layouts` shared templates, partials, and shortcodes (HTML + `.md`/`.txt` twins, JSON-LD, RSS, sitemaps, `llms.txt`)
 - `www/assets`, `www/static/css`, `www/static/js`, `www/static/fonts` styles, scripts, fonts
 - `www/i18n`, `www/archetypes`, `www/hugo.toml` localization, scaffolding, configuration
 - `www/scripts` `stamp-media.sh` (privacy-scrub + invisible CC0/source stamping of media) and `check-orphans.py`
 - `www/static/contact/message.php` the proof-of-work-gated contact handler (server paths redacted, set via env)
 - `build.sh` build to `www/public`
+
+The shared boundary interface supports image and reading views on phones, with horizontal swipes between images. Wider screens also have a movable split view. Work-specific templates, authored text, artwork records, and media are deliberately absent.
 
 ## Build
 

@@ -1,0 +1,3 @@
+{{- /* Shared markup for natural-size linked illustrations and index pictures. */ -}}
+{{- $image := partial "boundary-image.html" (dict "src" .src "displayWidth" (.displayWidth | default 1200)) -}}
+<a class="img-link{{ with .class }} {{ . }}{{ end }}" href="{{ .href }}"><img data-caption="{{ .caption }}" data-original="{{ .src }}" data-thumb="{{ $image.thumb }}" data-view="{{ $image.src }}" data-viewset="{{ $image.srcset }}" src="{{ $image.display }}"{{ if $image.displayWidth }} width="{{ $image.displayWidth }}" height="{{ $image.displayHeight }}"{{ end }} alt="{{ .alt }}"{{ if .lazy }} loading="lazy"{{ end }} decoding="async"></a>

@@ -1,5 +1,6 @@
 {{- with .Params.tags -}}
 <p class="post-meta tags">
+  <span class="tags-label">{{ i18n "tagTitle" }}:</span>
   {{- range . }}{{ $slug := urlize . }}<a class="tag" href="{{ printf "/tags/%s/" $slug | relLangURL }}" rel="tag">{{ i18n (printf "tag-%s" $slug) }}</a>{{ end -}}
 </p>
 {{- end -}}

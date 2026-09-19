@@ -1,0 +1,9 @@
+<a class="skip" href="#reading">{{ i18n "boundarySkip" }}</a>
+<header class="masthead">
+ <a class="brand" href="{{ site.Home.RelPermalink }}" rel="home">{{ with resources.Get "img/robot.png" }}{{ with .Fit "62x78 webp" }}<img src="{{ printf "data:image/webp;base64,%s" (.Content | base64Encode) | safeURL }}" decoding="sync" width="31" height="39" alt="{{ i18n "robotAlt" }}">{{ end }}{{ end }}{{ site.Title }}</a>
+ <div class="header-right">
+  {{ partial "langswitcher.html" . }}
+  <button class="theme-toggle js-only" type="button" aria-pressed="false" aria-label="{{ i18n "boundaryInvertLabel" }}">{{ i18n "boundaryInvert" }}</button>
+  <details class="index"><summary>{{ i18n "boundaryIndex" }}</summary><nav class="index-menu" aria-label="{{ i18n "boundaryIndex" }}">{{ range site.Menus.main }}<a href="{{ .URL }}"{{ if and (not $.documentKind) ($.page.IsMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}</nav></details>
+ </div>
+</header>

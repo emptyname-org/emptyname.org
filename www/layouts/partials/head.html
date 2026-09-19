@@ -1,5 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{{ with site.Params.pinterestVerify }}<meta name="p:domain_verify" content="{{ . }}">
+{{ end -}}
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -16,6 +18,7 @@
 {{ end }}{{ end -}}
 {{ end -}}
 <link rel="license" href="{{ site.Params.licenseURL }}">
+<link rel="alternate" type="application/json" title="emptyname agent catalogue" href="/agent-catalog.json">
 {{ with site.Params.orcid }}<link rel="me" href="{{ . }}">{{ end }}
 {{ with site.Params.github }}<link rel="me" href="{{ . }}">{{ end }}
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ "index.xml" | absLangURL }}">
@@ -23,7 +26,7 @@
 <link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .Permalink }}">
 {{ end -}}
 <meta property="og:site_name" content="emptyname">
-{{ $ogl := dict "en" "en_US" "es" "es_ES" "pt" "pt_PT" "fr" "fr_FR" -}}
+{{ $ogl := dict "en" "en_US" "es" "es_ES" "pt" "pt_PT" "fr" "fr_FR" "it" "it_IT" -}}
 {{ $curlang := site.Language.Lang -}}
 <meta property="og:locale" content="{{ index $ogl $curlang }}">
 {{ range hugo.Sites }}{{ if ne .Language.Lang $curlang }}<meta property="og:locale:alternate" content="{{ index $ogl .Language.Lang }}">
@@ -32,7 +35,17 @@
 <meta property="og:type" content="{{ cond .IsHome "website" "article" }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:description" content="{{ $desc }}">
-<meta name="twitter:card" content="summary">
-{{ $css := slice (resources.Get "css/fonts.css") (resources.Get "css/rams.css") (resources.Get "css/site.css") | resources.Concat "css/bundle.css" | minify | fingerprint -}}
-<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- /* Social metadata follows the same explicit image-resolution policy as the UI. */ -}}
+{{- $preview := partial "page-image.html" (dict "page" . "mode" "metadata") -}}
+{{- $img := $preview.src }}{{ $ogalt := $preview.alt -}}
+{{- with $img }}<meta property="og:image" content="{{ . | absURL }}">
+{{ end -}}
+{{- with $ogalt }}<meta property="og:image:alt" content="{{ . }}">
+{{ end -}}
+{{- if not .IsHome }}<meta property="article:published_time" content="{{ .Date.Format "2006-01-02" }}">
+{{ end -}}
+<meta name="twitter:card" content="{{ cond $img "summary_large_image" "summary" }}">
+<script src="/js/boundary-theme.js"></script>
+{{ partialCached "boundary-styles.html" . }}
+<link rel="stylesheet" href="/css/boundary.css">
 {{ partial "jsonld.html" . }}

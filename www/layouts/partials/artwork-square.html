@@ -3,7 +3,6 @@
        Renders nothing if the id doesn't resolve. */ -}}
 {{- with site.GetPage (printf "/artwork/%s" .id) -}}
   {{- $img := index .Params.images 0 -}}
-  {{- $thumb := $img -}}{{- $dim := "" -}}
-  {{- with resources.Get (strings.TrimPrefix "/" $img) }}{{ with .Fill "300x300 Center webp" }}{{ $thumb = .RelPermalink }}{{ $dim = printf "width=\"%d\" height=\"%d\"" .Width .Height }}{{ end }}{{ end -}}
-  <a class="sq-thumb{{ with $.class }} {{ . }}{{ end }}" href="{{ $.href }}"><img src="{{ $thumb }}" {{ $dim | safeHTMLAttr }} alt="{{ .Title }}" loading="lazy" decoding="async"></a>
+  {{- $optimized := partial "boundary-image.html" (dict "src" $img "square" true) -}}
+  <a class="sq-thumb{{ with $.class }} {{ . }}{{ end }}" href="{{ $.href }}"><img data-original="{{ $img }}" data-thumb="{{ $optimized.thumb }}" data-view="{{ $optimized.src }}" data-viewset="{{ $optimized.srcset }}" src="{{ $optimized.card }}"{{ if $optimized.cardWidth }} width="{{ $optimized.cardWidth }}" height="{{ $optimized.cardHeight }}"{{ end }} alt="{{ .Title }}" loading="lazy" decoding="async"></a>
 {{- end -}}

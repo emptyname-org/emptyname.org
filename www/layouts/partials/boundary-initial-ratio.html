@@ -1,0 +1,19 @@
+{{- /* Match the first selectable image so the phone stage has its final shape
+       even before progressive enhancement runs. */ -}}
+{{- $page := . -}}
+{{- $card := false -}}
+{{- if .IsHome -}}
+  {{- with site.Menus.main }}{{ range first 1 . }}{{ with .Page }}{{ $page = . }}{{ $card = true }}{{ end }}{{ end }}{{ end -}}
+{{- else if eq .Kind "term" -}}
+  {{- range first 1 .Pages.ByDate.Reverse }}{{ $page = . }}{{ $card = true }}{{ end -}}
+{{- else if eq .Kind "section" -}}
+  {{- $entries := union .Pages (where site.RegularPages "Params.artworkindex" true) -}}
+  {{- range first 1 (sort $entries "Date" "desc") }}{{ $page = . }}{{ end -}}
+{{- end -}}
+{{- $mode := "stage" -}}
+{{- if $card }}{{ $mode = "card" }}{{ else if eq .Kind "section" }}{{ $mode = "index" }}{{ end -}}
+{{- $source := partial "page-image.html" (dict "page" $page "mode" $mode) -}}
+{{- $image := partial "boundary-image.html" (dict "src" $source.src "displayWidth" $source.displayWidth) -}}
+{{- $ratio := 1.0 -}}
+{{- if $image.displayHeight }}{{ $ratio = div (float $image.displayWidth) $image.displayHeight }}{{ end -}}
+{{- return $ratio -}}

@@ -1,0 +1,13 @@
+{{- /* Homepage-style card for a content page: representative image, title, and
+       optional teaser/description. Image alt text remains accessibility metadata
+       and is never reused as visible prose. Image priority mirrors the site's preview metadata:
+       representative artwork, explicit page image, first page-media image,
+       first video poster, then the established site preview image. */ -}}
+{{- $p := . -}}
+<article class="home-entry">
+  {{- $image := partial "page-image.html" (dict "page" $p "mode" "card") -}}
+  {{- if $image.src }}{{ partial "linked-image.html" (merge $image (dict "class" "home-entry-image" "lazy" true)) }}{{ end }}
+  {{- $blurb := or $p.Params.teaser $p.Description $p.Params.desc -}}
+  <h2 class="home-entry-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+  {{- with $blurb }}<p class="home-entry-teaser">{{ . }}</p>{{ end }}
+</article>

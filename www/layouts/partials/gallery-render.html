@@ -1,21 +1,12 @@
-{{- /* Renders a stage + caption + thumbnail row + lightbox from a list of image
-       items (dict: src, cap, alt). Markup only - no schema.org (the canonical
-       ImageObject for each image lives on its artwork page). */ -}}
-{{- $items := .items -}}
-{{- with $items }}
+{{- /* Full linked gallery is the baseline. Boundary JS enhances it after startup. */ -}}
+{{- with .items }}
 <div class="gallery" data-gallery>
   <div class="gallery-stage">
   {{- range $i, $it := . }}
-    <img class="gallery-full{{ if eq $i 0 }} is-active{{ end }}" src="{{ $it.src }}" alt="{{ $it.alt }}" data-caption="{{ $it.cap }}" loading="lazy" decoding="async">
+    {{- $image := partial "boundary-image.html" (dict "src" $it.src) -}}
+    <a class="gallery-original" href="{{ $it.src }}" aria-label="{{ $it.cap }}"><img class="gallery-full" src="{{ $image.src }}" srcset="{{ $image.srcset }}" sizes="(max-width: 767px) 100vw, 60vw" width="{{ $image.width }}" height="{{ $image.height }}" data-original="{{ $it.src }}" data-thumb="{{ $image.thumb }}" alt="{{ $it.alt }}" data-caption="{{ $it.cap }}"{{ with $it.artworkURL }} data-artwork-url="{{ . }}"{{ end }} loading="lazy" decoding="async"><span class="fallback-caption" data-caption="{{ $it.cap }}" aria-hidden="true"></span></a>
   {{- end }}
   </div>
   <p class="gallery-caption" aria-live="polite"></p>
-  <div class="gallery-thumbs">
-  {{- range $i, $it := . }}
-    {{- $thumb := $it.src -}}
-    {{- with resources.Get (strings.TrimPrefix "/" $it.src) }}{{ with .Fill "148x148 Center webp" }}{{ $thumb = .RelPermalink }}{{ end }}{{ end }}
-    <button class="gallery-thumb{{ if eq $i 0 }} is-active{{ end }}" type="button" data-index="{{ $i }}" aria-label="{{ i18n "viewImage" (dict "n" (add $i 1)) }}"><img src="{{ $thumb }}" alt="" loading="lazy"></button>
-  {{- end }}
-  </div>
 </div>
 {{- end -}}

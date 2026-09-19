@@ -1,0 +1,10 @@
+{{- /* Keep source CSS readable while retaining the single-request font setup. */ -}}
+{{- $faces := "" -}}
+{{- range slice (dict "weight" 400 "file" "regular") (dict "weight" 700 "file" "700") -}}
+  {{- $font := readFile (printf "static/fonts/montserrat-v24-latin-%s.woff2" .file) | base64Encode -}}
+  {{- $faces = printf "%s@font-face{font-family:Montserrat;src:url('data:font/woff2;base64,%s') format('woff2');font-weight:%d;font-display:block}\n" $faces $font .weight -}}
+{{- end -}}
+{{- $fonts := resources.FromString "css/boundary-fonts.css" $faces -}}
+{{- $compiled := slice $fonts (resources.Get "css/boundary.css") | resources.Concat "internal/boundary.css" | minify -}}
+{{- $style := resources.FromString "css/boundary.css" $compiled.Content -}}
+{{- $publish := $style.RelPermalink -}}

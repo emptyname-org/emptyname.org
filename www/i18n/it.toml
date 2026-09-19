@@ -1,0 +1,79 @@
+boundaryAudioCollage = "Collage sonoro"
+boundaryScoresRecordings = "Partiture grafiche e registrazioni"
+boundaryHideText = "Nascondi testo"
+boundaryHideCompositions = "Nascondi composizioni"
+boundaryHideScores = "Nascondi partiture"
+boundaryImageAndIndex = "Immagine e indice insieme"
+boundaryImageAndText = "Immagine e testo insieme"
+boundaryImageAndCompositions = "Immagine e composizioni insieme"
+boundaryImageAndScores = "Immagine e partiture insieme"
+boundaryScores = "Partiture"
+boundaryCompositions = "Composizioni"
+boundaryHideIndex = "Nascondi indice"
+boundarySplitView = "Vista divisa"
+boundaryHideImage = "Nascondi immagine"
+boundaryShare = "Area dell’immagine: {value}%"
+boundaryInvertLabel = "Inverti i colori dell’interfaccia"
+# Movable boundary interface
+boundarySkip = "Vai al contenuto"
+boundaryIndex = "Indice"
+boundaryInvert = "Inverti"
+boundaryImage = "Immagine"
+boundaryText = "Testo"
+boundaryResize = "Regola la larghezza dell’immagine e del testo"
+boundaryPrevious = "Elemento precedente"
+boundaryNext = "Elemento successivo"
+boundaryInspect = "Esamina l’immagine"
+boundaryClose = "Chiudi"
+boundaryOriginal = "Immagine originale"
+boundaryError = "Impossibile caricare l’immagine."
+boundaryRetry = "Riprova"
+boundarySelection = "Selezione degli elementi"
+boundaryMode = "Modalità di visualizzazione"
+
+# Stringhe dell'interfaccia - Italiano.
+robotAlt = "Il marchio emptyname - un piccolo robot disegnato al tratto."
+languageLabel = "Lingua"
+
+# Modulo di contatto
+contactNameLabel = "Il tuo nome"
+contactEmailLabel = "La tua email"
+contactMessageLabel = "Il tuo messaggio"
+socialLabel = "Link esterni"
+contactSend = "Invia"
+
+allArtworks = "Tutte le opere"
+appearsOn = "Compare su"
+
+viewImage = "Vedi immagine {{ .n }}"
+
+# Modulo di contatto - messaggi di stato JavaScript
+cfSending = "Invio del messaggio..."
+cfSent = "Il messaggio è stato inviato."
+cfBadEmail = "Inserisci un indirizzo email valido."
+cfRequired = "Inserisci un indirizzo email e un messaggio."
+cfSendFail = "Spiacenti - non è stato possibile inviare il messaggio."
+cfError = "Spiacenti - qualcosa è andato storto."
+
+# Tag / interfaccia della tassonomia
+tagTitle = "Tag"
+tagBack = "← tutti i tag"
+
+# Etichette visualizzate per i tag. I valori strutturali restano in inglese.
+tag-generative-art = "Arte generativa"
+tag-experimental-music = "Musica sperimentale"
+tag-graphical-scores = "Partiture grafiche"
+tag-music = "Musica"
+tag-paintings = "Dipinti"
+tag-texts = "Testi"
+tag-audio = "Audio"
+tag-nft = "NFT"
+tag-performance = "Performance"
+tag-ai = "IA"
+tag-philosophy-of-art = "Filosofia dell'arte"
+
+anchorLabel = "Link a questa sezione"
+
+[tagCount]
+one = "{{ . }} opera con questo tag"
+other = "{{ . }} opere con questo tag"
